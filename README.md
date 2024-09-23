@@ -4,16 +4,16 @@ The Task Tracker is a web application built using HTML, CSS, and JavaScript, It 
 # Project Screenshots
 
 ## Screenshot 1
-![Screenshot 227](images/Screenshot%20(220).png)
+![Screenshot 227](images/Screenshot%20(227).png)
 
 &nbsp; <!-- This adds a space between the images -->
 
 ## Screenshot 2
-![Screenshot 228](images/Screenshot%20(221).png)
+![Screenshot 228](images/Screenshot%20(228).png)
 
 &nbsp;
 
 ## Screenshot 3
-![Screenshot 231](images/Screenshot%20(223).png)
+![Screenshot 231](images/Screenshot%20(231).png)
 
 &nbsp;
