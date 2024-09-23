@@ -1,1 +1,2 @@
 # Task-Tracker
+The Task Tracker is a web application built using HTML, CSS, and JavaScript, It allows users to efficiently manage their daily tasks by adding, deleting, and editing. The clean, user-friendly interface ensures smooth task management, with all interactions happening dynamically without needing to reload the page. Users can keep track of pending tasks, clear completed ones, and maintain a productive workflow through this lightweight and intuitive task management tool.
