@@ -114,17 +114,22 @@ function addItem(e) {
     deleteButton.className = "btn-danger btn btn-sm float-right delete";
     deleteButton.textContent = "Delete";
 
-     // Share button (with mailto link)
-     let shareButton = document.createElement("button");
-     shareButton.className = "btn btn-secondary btn-sm float-right share ml-2";
-     shareButton.textContent = "Share";
- 
-     // Attach mailto link
-     let emailBody = encodeURIComponent(`Task: ${newItem}`);
-     let emailSubject = encodeURIComponent("Task Sharing");
-     shareButton.onclick = function() {
-         window.location.href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
-     };
+    // Share button (with mailto link)
+let shareButton = document.createElement("button");
+shareButton.className = "btn btn-secondary btn-sm float-right share ml-2";
+shareButton.textContent = "Share";
+
+// Attach mailto link
+let emailBody = encodeURIComponent(`Task: ${newItem}`);
+let emailSubject = encodeURIComponent("Task Sharing");
+
+shareButton.onclick = function() {
+    let mailtoLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+
+    // Try using window.open for more consistent behavior across devices
+    window.open(mailtoLink, '_blank');
+};
+
 
     li.appendChild(taskText);
     li.appendChild(alarmTime);
