@@ -99,6 +99,11 @@ function addItem(e) {
     alarmTime.className = "alarm-time ml-2";
     alarmTime.textContent = "";
 
+    // Alarm button (new feature)
+    let alarmButton = document.createElement("button");
+    alarmButton.className = "btn-warning btn btn-sm float-right alarm ml-2";
+    alarmButton.textContent = "Alarm";
+
     // Edit button
     let editButton = document.createElement("button");
     editButton.className = "btn-success btn btn-sm float-right edit ml-2";
@@ -109,9 +114,23 @@ function addItem(e) {
     deleteButton.className = "btn-danger btn btn-sm float-right delete";
     deleteButton.textContent = "Delete";
 
+     // Share button (with mailto link)
+     let shareButton = document.createElement("button");
+     shareButton.className = "btn btn-secondary btn-sm float-right share ml-2";
+     shareButton.textContent = "Share";
+ 
+     // Attach mailto link
+     let emailBody = encodeURIComponent(`Task: ${newItem}`);
+     let emailSubject = encodeURIComponent("Task Sharing");
+     shareButton.onclick = function() {
+         window.location.href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+     };
+
     li.appendChild(taskText);
     li.appendChild(alarmTime);
+    li.appendChild(alarmButton); 
     li.appendChild(setTimeButton);
+    li.appendChild(shareButton);
     li.appendChild(editButton);
     li.appendChild(deleteButton);
 
@@ -156,6 +175,25 @@ function handleListActions(e) {
             alert("Invalid time format. Use HH:MM AM/PM (e.g., 7:50 pm).");
         }
     }
+    if (e.target.classList.contains("alarm")) {
+        // Check the device type
+        const userAgent = navigator.userAgent.toLowerCase();
+    
+        if (userAgent.includes("android")) {
+            // Redirect to the Google Clock app on the Play Store
+            window.open("https://play.google.com/store/apps/details?id=com.google.android.deskclock", "_blank");
+        } else if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
+            // Redirect to a suitable Alarm Clock app on the App Store
+            window.open("https://apps.apple.com/in/app/clock/id1584215688", "_blank");
+        } else if (userAgent.includes("windows")) {
+            // Redirect to the Alarm Clock app on the Microsoft Store
+            window.open("https://www.microsoft.com/store/productId/9WZDNCRFJ3PR?ocid=pdpshare", "_blank");
+        } else {
+            // Fallback for unsupported devices
+            alert("Clock app feature is not available for this device.");
+        }
+    }
+    
 }
 
 function toggleButton(ref, btnID) {

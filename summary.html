@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Daily Summary</title>
+    <style>
+        /* Default Light Theme */
+        body {
+            background-color: #eef2f3; /* Light background */
+            color: #333333; /* Dark text */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            background-color: #30af1c; /* Light header */
+            color: #333333;
+            padding: 20px 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .summary-container {
+            margin-top: 50px;
+            background-color: #ffffff; /* Light container */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-toggle {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-toggle:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dark Theme */
+        body.dark {
+            background-color: #2c2f36; /* Dark background */
+            color: #f8f9fa; /* Light text */
+        }
+
+        header.dark {
+            background-color: #ebedef; /* Dark header */
+            color: #00050a;
+        }
+
+        .summary-container.dark {
+            background-color: #3c434b; /* Dark container */
+            color: #f8f9fa;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        input {
+            padding: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header" class="text-center">
+        <h1>Daily Summary</h1>
+        <button class="btn-toggle" id="themeToggleBtn">Switch to Dark Mode</button>
+    </header>
+
+    <div class="summary-container text-center" id="summaryContainer">
+        <form id="summaryForm">
+            <div class="form-group">
+                <label for="totalTasks">Total Tasks:</label>
+                <input type="number" id="totalTasks" class="form-control form-control-sm" placeholder="Enter total" required>
+            </div>
+            <div class="form-group">
+                <label for="pendingTasks">Pending Tasks:</label>
+                <input type="number" id="pendingTasks" class="form-control form-control-sm" placeholder="Enter pending" required>
+            </div>
+            <div class="form-group">
+                <label for="completedTasks">Completed Tasks:</label>
+                <input type="number" id="completedTasks" class="form-control form-control-sm" readonly>
+            </div>
+            <button type="button" id="calculateBtn" class="btn btn-primary btn-sm">Calculate</button>
+        </form>
+        <a href="index.html" class="btn btn-secondary btn-sm mt-3">Back to Task Tracker</a>
+    </div>
+
+    <script>
+        // Toggle between Light and Dark Theme
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const body = document.body;
+        const header = document.getElementById('header');
+        const summaryContainer = document.getElementById('summaryContainer');
+
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            header.classList.toggle('dark');
+            summaryContainer.classList.toggle('dark');
+
+            // Update button text based on theme
+            themeToggleBtn.textContent = body.classList.contains('dark')
+                ? 'Switch to Light Mode'
+                : 'Switch to Dark Mode';
+        });
+
+        // Calculate Completed Tasks
+        const calculateBtn = document.getElementById('calculateBtn');
+        calculateBtn.addEventListener('click', () => {
+            const totalTasks = parseInt(document.getElementById('totalTasks').value) || 0;
+            const pendingTasks = parseInt(document.getElementById('pendingTasks').value) || 0;
+
+            if (totalTasks < pendingTasks) {
+                alert('Pending tasks cannot exceed total tasks!');
+                return;
+            }
+
+            const completedTasks = totalTasks - pendingTasks;
+            document.getElementById('completedTasks').value = completedTasks;
+        });
+        
+    </script>
+</body>
+
+</html>
