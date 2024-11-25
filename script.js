@@ -89,35 +89,39 @@ function addItem(e) {
     taskText.className = "task-text";
     taskText.textContent = newItem;
 
-    // Set time button
-    let setTimeButton = document.createElement("button");
-    setTimeButton.className = "btn-info btn btn-sm float-right set-time ml-2";
-    setTimeButton.textContent = "Set Time";
+ // Set Time Button
+let setTimeButton = document.createElement("button");
+setTimeButton.className = "btn btn-info btn-sm float-right set-time ml-2";
+setTimeButton.innerHTML = '<i class="bi bi-clock-fill"></i>'; // Bootstrap clock icon
+setTimeButton.title = "Set Task Time";
+
 
     // Alarm time span
     let alarmTime = document.createElement("span");
     alarmTime.className = "alarm-time ml-2";
     alarmTime.textContent = "";
 
-    // Alarm button (new feature)
-    let alarmButton = document.createElement("button");
-    alarmButton.className = "btn-warning btn btn-sm float-right alarm ml-2";
-    alarmButton.textContent = "Alarm";
+ // Alarm Button
+let alarmButton = document.createElement("button");
+alarmButton.className = "btn btn-warning btn-sm float-right alarm ml-2";
+alarmButton.innerHTML = '<i class="bi bi-bell-fill"></i>'; // Bootstrap bell icon
+alarmButton.title = "Set Alarm";
+// Edit button
+let editButton = document.createElement("button");
+editButton.className = "btn-success btn btn-sm float-right edit ml-2";
+editButton.innerHTML = '<i class="bi bi-pencil"></i>'; // Bootstrap Pencil Icon
 
-    // Edit button
-    let editButton = document.createElement("button");
-    editButton.className = "btn-success btn btn-sm float-right edit ml-2";
-    editButton.textContent = "Edit";
+// Delete Button
+let deleteButton = document.createElement("button");
+deleteButton.className = "btn btn-danger btn-sm float-right delete";
+deleteButton.innerHTML = '<i class="bi bi-trash-fill"></i>'; // Bootstrap trash icon
+deleteButton.title = "Delete Task";
 
-    // Delete button
-    let deleteButton = document.createElement("button");
-    deleteButton.className = "btn-danger btn btn-sm float-right delete";
-    deleteButton.textContent = "Delete";
-
-    // Share button (with mailto link)
+ // Share Button
 let shareButton = document.createElement("button");
 shareButton.className = "btn btn-secondary btn-sm float-right share ml-2";
-shareButton.textContent = "Share";
+ shareButton.innerHTML = '<i class="bi bi-share-fill"></i>'; // Bootstrap share icon
+ shareButton.title = "Share Task"; // Tooltip text
 
 // Attach mailto link
 let emailBody = encodeURIComponent(`Task: ${newItem}`);
