@@ -89,27 +89,28 @@ function addItem(e) {
     taskText.className = "task-text";
     taskText.textContent = newItem;
 
- // Set Time Button
+// Create Set Time button
 let setTimeButton = document.createElement("button");
 setTimeButton.className = "btn btn-info btn-sm float-right set-time ml-2";
 setTimeButton.innerHTML = '<i class="bi bi-clock-fill"></i>'; // Bootstrap clock icon
-setTimeButton.title = "Set Task Time";
-
+setTimeButton.title = "Set Task Time";  // Tooltip for accessibility
 
     // Alarm time span
     let alarmTime = document.createElement("span");
     alarmTime.className = "alarm-time ml-2";
     alarmTime.textContent = "";
 
- // Alarm Button
+// Create the alarm button
 let alarmButton = document.createElement("button");
 alarmButton.className = "btn btn-warning btn-sm float-right alarm ml-2";
 alarmButton.innerHTML = '<i class="bi bi-bell-fill"></i>'; // Bootstrap bell icon
 alarmButton.title = "Set Alarm";
-// Edit button
+
+// Create Edit button
 let editButton = document.createElement("button");
 editButton.className = "btn-success btn btn-sm float-right edit ml-2";
 editButton.innerHTML = '<i class="bi bi-pencil"></i>'; // Bootstrap Pencil Icon
+editButton.title = "Edit Task";  // Add a tooltip for accessibility
 
 // Delete Button
 let deleteButton = document.createElement("button");
@@ -117,22 +118,22 @@ deleteButton.className = "btn btn-danger btn-sm float-right delete";
 deleteButton.innerHTML = '<i class="bi bi-trash-fill"></i>'; // Bootstrap trash icon
 deleteButton.title = "Delete Task";
 
- // Share Button
+// Create Share button
 let shareButton = document.createElement("button");
 shareButton.className = "btn btn-secondary btn-sm float-right share ml-2";
- shareButton.innerHTML = '<i class="bi bi-share-fill"></i>'; // Bootstrap share icon
- shareButton.title = "Share Task"; // Tooltip text
+shareButton.innerHTML = '<i class="bi bi-share-fill"></i>'; // Bootstrap share icon
+shareButton.title = "Share Task"; // Tooltip text
 
-// Attach mailto link
-let emailBody = encodeURIComponent(`Task: ${newItem}`);
-let emailSubject = encodeURIComponent("Task Sharing");
+// Attach email body and subject for sharing
+const emailBody = encodeURIComponent(`Task: ${newItem}`);
+const emailSubject = encodeURIComponent("Task Sharing");
 
-shareButton.onclick = function() {
-    let mailtoLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+// Attach click event handler
+shareButton.addEventListener("click", () => {
+    const mailtoLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+    window.open(mailtoLink, '_blank'); // Open the mailto link in a new tab
+});
 
-    // Try using window.open for more consistent behavior across devices
-    window.open(mailtoLink, '_blank');
-};
 
 
     li.appendChild(taskText);
@@ -149,59 +150,82 @@ shareButton.onclick = function() {
 function handleListActions(e) {
     e.preventDefault();
 
-    // Delete task
-    if (e.target.classList.contains("delete")) {
-        if (confirm("Are you Sure?")) {
-            let li = e.target.parentNode;
-            items.removeChild(li);
+    // Event handler for delete
+if (e.target.closest(".delete")) {
+    if (confirm("Are you Sure?")) {
+        let li = e.target.closest("li");
+        items.removeChild(li);
 
-            document.getElementById("lblsuccess").innerHTML = "Text deleted successfully";
-            document.getElementById("lblsuccess").style.display = "block";
+        document.getElementById("lblsuccess").innerHTML = "Text deleted successfully";
+        document.getElementById("lblsuccess").style.display = "block";
 
-            setTimeout(() => {
-                document.getElementById("lblsuccess").style.display = "none";
-            }, 3000);
-        }
+        setTimeout(() => {
+            document.getElementById("lblsuccess").style.display = "none";
+        }, 3000);
+    }
+}
+
+// Handle Edit button click
+if (e.target.closest(".edit")) {
+    const taskTextElement = e.target.closest('li').querySelector('.task-text');
+    const itemInput = document.getElementById("item");
+
+    // Set the value of the input to the task text
+    if (taskTextElement) {
+        itemInput.value = taskTextElement.textContent;
+    } else {
+        console.error("Task text not found for editing.");
     }
 
-    // Edit task
-    if (e.target.classList.contains("edit")) {
-        document.getElementById("item").value =
-            e.target.parentNode.querySelector('.task-text').textContent;
-        submit.value = "EDIT";
-        editItem = e;
+    // Change the button value to 'EDIT' to indicate editing mode
+    const submitButton = document.getElementById("submit");
+    if (submitButton) {
+        submitButton.value = "EDIT";
     }
 
-    // Set time for the notification
-    if (e.target.classList.contains("set-time")) {
-        const alarmTime = prompt("Set task time in HH:MM AM/PM format:");
+    // Store the edit item for later use
+    editItem = e;
+}
 
-        const normalizedTime = alarmTime.trim().toUpperCase().replace(/\s+/g, " ");
-        if (/^(0?[1-9]|1[0-2]):[0-5][0-9](\s?)(AM|PM)$/i.test(normalizedTime)) {
-            e.target.parentNode.querySelector(".alarm-time").textContent = normalizedTime;
-            alert(`Task time set for: ${normalizedTime}`);
-        } else {
-            alert("Invalid time format. Use HH:MM AM/PM (e.g., 7:50 pm).");
-        }
+// Handle Set Time button click
+if (e.target.closest(".set-time")) {
+    const taskItem = e.target.closest('li');
+    const alarmTimeElement = taskItem.querySelector(".alarm-time");
+
+    // Prompt for task time input
+    const alarmTime = prompt("Set task time in HH:MM AM/PM format:");
+
+    // Normalize and validate time format
+    const normalizedTime = alarmTime.trim().toUpperCase().replace(/\s+/g, " ");
+    const timePattern = /^(0?[1-9]|1[0-2]):[0-5][0-9](\s?)(AM|PM)$/i;
+
+    if (timePattern.test(normalizedTime) && alarmTimeElement) {
+        alarmTimeElement.textContent = normalizedTime;
+        alert(`Task time set for: ${normalizedTime}`);
+    } else {
+        alert("Invalid time format. Use HH:MM AM/PM (e.g., 7:50 PM).");
     }
-    if (e.target.classList.contains("alarm")) {
-        // Check the device type
-        const userAgent = navigator.userAgent.toLowerCase();
-    
-        if (userAgent.includes("android")) {
-            // Redirect to the Google Clock app on the Play Store
-            window.open("https://play.google.com/store/apps/details?id=com.google.android.deskclock", "_blank");
-        } else if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
-            // Redirect to a suitable Alarm Clock app on the App Store
-            window.open("https://apps.apple.com/in/app/clock/id1584215688", "_blank");
-        } else if (userAgent.includes("windows")) {
-            // Redirect to the Alarm Clock app on the Microsoft Store
-            window.open("https://www.microsoft.com/store/productId/9WZDNCRFJ3PR?ocid=pdpshare", "_blank");
-        } else {
-            // Fallback for unsupported devices
-            alert("Clock app feature is not available for this device.");
-        }
+}
+
+// Handle alarm button click
+if (e.target.closest(".alarm")) {
+    const userAgent = navigator.userAgent.toLowerCase();
+    let alarmLink = "";
+
+    if (userAgent.includes("android")) {
+        alarmLink = "https://play.google.com/store/apps/details?id=com.google.android.deskclock";
+    } else if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
+        alarmLink = "https://apps.apple.com/in/app/clock/id1584215688";
+    } else if (userAgent.includes("windows")) {
+        alarmLink = "https://www.microsoft.com/store/productId/9WZDNCRFJ3PR?ocid=pdpshare";
     }
+
+    if (alarmLink) {
+        window.open(alarmLink, "_blank");
+    } else {
+        alert("Clock app feature is not available for this device.");
+    }
+}    
     
 }
 
